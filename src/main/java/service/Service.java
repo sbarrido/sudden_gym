@@ -12,22 +12,16 @@ abstract class Service {
         this.fileName = location;
     }
     public void create(String[] attributes) throws Exception {
-        getWriter();
-        
-        for(String value : attributes) {
-            buffWrite.write(value);
-            buffWrite.write(",");         
-        }
-
-        buffWrite.close();
+        update(attributes);
     }
     public void update(String[] attributes) throws Exception {
         getReader();
         getWriter();
         ArrayList<String> tempStore = new ArrayList<>();
         String targetID = attributes[0];
+        boolean found = false;
 
-        while(buffRead.ready()) {
+        while(buffRead.ready() && !found) {
             String line = buffRead.readLine();
             String[] lineArray = line.split(",");
             if(lineArray[0] == targetID) {
@@ -38,10 +32,19 @@ abstract class Service {
                 }
                 tempStore.add(record);
             }
-            tempStore.add(line);
+        }
+
+        if(!found) {
+            String record = "";
+                for(String value : attributes) {
+                    record += value;
+                    record += ",";
+                }
+                tempStore.add(record);
         }
 
         for(String record : tempStore) {
+
             buffWrite.write(record);
             buffWrite.newLine();
         }
@@ -70,18 +73,21 @@ abstract class Service {
 
         buffRead.close();
         buffWrite.close();
-
     }
     public String read(int target) throws Exception {
         getReader();
         String value = null;
-        int i = 0;
-        boolean cond = i != target;
+        boolean found = false;
 
-        while(buffRead.ready() && cond) {
-            buffRead.readLine();
+        while(buffRead.ready() && !found) {
+            String line = buffRead.readLine();
+            String[] lineArray = line.split(",");
+
+            if(Integer.valueOf(lineArray[0]) == target) {
+                value = line;
+                found = true;
+            }
         }
-        value = buffRead.readLine();
 
         return value;
     }
