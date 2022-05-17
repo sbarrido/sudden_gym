@@ -1,115 +1,65 @@
 package service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 abstract class Service {
-    private String fileName = "";
-    private BufferedReader buffRead;
-    private BufferedWriter buffWrite;
+    private File fileName;
 
     public void setFile(String location) {
-        this.fileName = location;
+        this.fileName = new File(location);
     }
     public void create(String[] attributes) throws Exception {
-        update(attributes);
-    }
-    public void update(String[] attributes) throws Exception {
-        getReader();
-        getWriter();
-        ArrayList<String> tempStore = new ArrayList<>();
-        String targetID = attributes[0];
-        boolean found = false;
+        FileWriter fileWrite = new FileWriter(fileName, true);
+        BufferedWriter buffWrite = new BufferedWriter(fileWrite);
 
-        while(buffRead.ready() && !found) {
-            String line = buffRead.readLine();
-            String[] lineArray = line.split(",");
-            if(lineArray[0] == targetID) {
-                String record = "";
-                for(String value : attributes) {
-                    record += value;
-                    record += ",";
-                }
-                tempStore.add(record);
+        for(String val : attributes) {
+            buffWrite.write(val);
+            buffWrite.write(",");
+        }
+        buffWrite.write("\n");
+
+        buffWrite.close();
+    }
+    public void delete(int targetID) throws Exception {
+        String target = null;
+        FileReader fileRead = new FileReader(fileName);
+        BufferedReader buffRead = new BufferedReader(fileRead);
+
+        FileWriter fileWrite = new FileWriter(fileName);
+        BufferedWriter buffWrite = new BufferedWriter(fileWrite);
+        String content = "";
+        while(buffRead.ready()) {
+            target = buffRead.readLine();
+            String[] targetArray = target.split(",");
+
+            if(Integer.valueOf(targetArray[0]) != targetID) {
+                content += target;
             }
         }
 
-        if(!found) {
-            String record = "";
-                for(String value : attributes) {
-                    record += value;
-                    record += ",";
-                }
-                tempStore.add(record);
-        }
-
-        for(String record : tempStore) {
-
-            buffWrite.write(record);
-            buffWrite.newLine();
-        }
-
-        buffRead.close();
+        buffWrite.write(content);
         buffWrite.close();
-
+        buffRead.close();
     }
-    public void delete(int target) throws Exception{
-        getReader();
-        getWriter();
-        ArrayList<String> tempStore = new ArrayList<>();
+    public String read(int targetID) throws Exception {
+        String target = null;
+        FileReader fileRead = new FileReader(this.fileName);
+        BufferedReader buffRead = new BufferedReader(fileRead);
+        String line = null;
 
         while(buffRead.ready()) {
-            String line = buffRead.readLine();
+            line = buffRead.readLine();
             String[] lineArray = line.split(",");
-            if(lineArray[0] != Integer.toString(target)) {
-                tempStore.add(line);
+
+            if(targetID == Integer.valueOf(lineArray[0])) {
+                target = line;
             }
         }
 
-        for(String record : tempStore) {
-            buffWrite.write(record);
-            buffWrite.newLine();
-        }
-
-        buffRead.close();
-        buffWrite.close();
+        return target;
     }
-    public String read(int target) throws Exception {
-        getReader();
-        String value = null;
-        boolean found = false;
-
-        while(buffRead.ready() && !found) {
-            String line = buffRead.readLine();
-            String[] lineArray = line.split(",");
-
-            if(Integer.valueOf(lineArray[0]) == target) {
-                value = line;
-                found = true;
-            }
-        }
-
-        return value;
-    }
-    public ArrayList<String> readAll() throws Exception {
-        getReader();
-        String line;
-        ArrayList<String> values = new ArrayList<>();
-
-        while((line = buffRead.readLine()) != null) {
-            values.add(line);
-        }
-
-        return values;
-    }
-    private BufferedReader getReader() throws Exception {
-        this.buffRead = new BufferedReader(new FileReader(this.fileName));
-
-        return this.buffRead;
-    }
-    private BufferedWriter getWriter() throws Exception {
-        this.buffWrite = new BufferedWriter(new FileWriter(this.fileName));
-
-        return this.buffWrite;
-    } 
 }

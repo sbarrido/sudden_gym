@@ -20,10 +20,9 @@ public class InvoiceController {
         ArrayList<String> target = new ArrayList<String>();
 
         try{
-            iService.update(record);
-            iService.update(record1);
-            // iService.update(record2);
-            target = iService.readAll();
+            iService.create(record);
+            iService.create(record1);
+            iService.create(record2);
         }catch(Exception ex) {
             System.out.println(ex);
         }
