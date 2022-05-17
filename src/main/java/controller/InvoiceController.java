@@ -2,8 +2,11 @@ package controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import service.InvoiceService;
@@ -14,20 +17,14 @@ public class InvoiceController {
 
     @GetMapping("/invoice")
     public String invoice() {
-        String[] record = {"0", "0", "1", "1-1-2001"};
-        String[] record1 = {"1", "2", "1", "3-3-2001"};
-        String[] record2 = {"2", "1", "1", "2-2-2001"};
-        ArrayList<String> target = new ArrayList<String>();
-
+        String target = null;
         try{
-            iService.create(record);
-            iService.create(record1);
-            iService.create(record2);
+            target = iService.readAll();
         }catch(Exception ex) {
             System.out.println(ex);
         }
 
-        return target.toString();
+        return target;
     }
 
     @GetMapping("/invoice/{id}")
@@ -38,9 +35,19 @@ public class InvoiceController {
         }catch(Exception ex) {
             System.out.println(ex);
         }
+        
         if(target == null) {
             target = "Not Found";
         }
         return target;
+
+    }
+    @DeleteMapping(value = "/invoice/{id}")
+    public void deleteInvoiceByID(@PathVariable String id) {
+        try{
+            iService.delete(Integer.valueOf(id));
+        }catch(Exception ex) {
+            System.out.println(ex);
+        }
     }
 }
