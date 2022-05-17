@@ -60,3 +60,22 @@ input {
     display: block;
 }
 
+.home {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.classes {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 60%;
+    padding: 6px;
+}
+
+.form-group {
+    text-align: center;
+}
