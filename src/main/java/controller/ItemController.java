@@ -24,4 +24,17 @@ public class ItemController {
 
         return target;
     }
+
+    @GetMapping("/item/{id}")
+    public String getItemByID(@PathVariable String id) {
+        String target = null;
+
+        try {
+            target = itmService.read(Integer.valueOf(id));
+        }catch(Exception ex) {
+            System.out.println(ex);
+        }
+
+        return target;
+    }
 }
