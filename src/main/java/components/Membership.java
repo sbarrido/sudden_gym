@@ -1,5 +1,8 @@
 package components;
 
+//Component class for Membership
+// includes title
+// a type of InvoiceItem
 public class Membership extends InvoiceItem{
     public String title;
 

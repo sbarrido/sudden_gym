@@ -1,5 +1,8 @@
 package components;
 
+// Component class for Employees
+//Includes Rate and Hours
+// A type of User
 public class Employee extends User {
     public double rate = 0.0;
     public double hours = 0.0;

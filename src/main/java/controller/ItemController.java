@@ -9,10 +9,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import service.ItemService;
 
+
+/**
+ * Controller Class for Endpoints
+ * Involved in Item table transactions
+ */
 @RestController
 public class ItemController {
+
+    //Service helper -- Connects to invoice table
     private ItemService itmService = new ItemService();
 
+    /** GET endpoint for all items
+     * 
+     * @return target: string, all items listed
+     */
     @GetMapping("/item")
     public String item() {
         String target = null;
@@ -25,6 +36,10 @@ public class ItemController {
         return target;
     }
 
+    /** GET endpoint for designated invoices
+     * 
+     * @return target: string, designated invoices listed
+     */
     @GetMapping("/item/{id}")
     public String getItemByID(@PathVariable String id) {
         String target = null;

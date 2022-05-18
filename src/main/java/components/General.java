@@ -1,5 +1,8 @@
 package components;
 
+//component class for General
+// A type of User
+// Includes a membership
 public class General extends User{
     public int membership;
 

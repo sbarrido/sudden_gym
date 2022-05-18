@@ -9,10 +9,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import service.UserService;
 
+/**
+ * Controller Class for Endpoints
+ * Involved in User table transactions
+ */
 @RestController
 public class UserController {
+
+    //Service helper -- Connects to invoice table
     private UserService usrService = new UserService();
 
+    /** GET endpoint for all users
+     * 
+     * @return target: string, all users listed
+     */
     @GetMapping("/user")
     public String user() {
         String target = null;
@@ -24,6 +34,11 @@ public class UserController {
 
         return target;
     }
+
+     /** GET endpoint for designated user
+     * 
+     * @return target: string, designated user listed
+     */
     @GetMapping("/user/{id}")
     public String getUserbyID(@PathVariable String id) {
         String target = null;

@@ -1,5 +1,10 @@
 package components;
 
+//Component Class for InvoiceItem
+//Parent class to many
+//Static count of all invoice Items
+//id based off of the static count at time of creation
+//includes prices and duration
 public class InvoiceItem {
     private static int count;
     public int id;

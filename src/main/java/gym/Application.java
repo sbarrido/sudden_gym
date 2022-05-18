@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import controller.InvoiceController;
 
+//Base runner to launch gym application
 @SpringBootApplication
 @ComponentScan(basePackageClasses = InvoiceController.class)
 public class Application {
